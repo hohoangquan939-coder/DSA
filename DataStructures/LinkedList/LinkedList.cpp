@@ -1,3 +1,5 @@
+// Contains only LinkedList methods and friend functions.
+
 #include "LinkedList.h"
 #include <iostream>
 using namespace std;
