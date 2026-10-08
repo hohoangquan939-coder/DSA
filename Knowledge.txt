@@ -1,0 +1,17 @@
+Sorting:
+Insertion Sort
+Selection Sort
+Bubble Sort
+Merge Sort
+Heap Sort
+Quick Sort
+
+Data Structures:
+Singly Linked List 
+Stack
+Queue 
+Piority Queue
+Hash Table 
+
+Advanced Data Structures:
+Binary Search Tree 
