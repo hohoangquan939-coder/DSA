@@ -123,18 +123,92 @@ Node* AvlTree::Insert(Node* p, int x){
     return p;
 } 
 
+Node* AvlTree::FindAncestor(Node* p){
+    if(p == nullptr || p->right == nullptr) return nullptr;
+    Node* k = p->right;
+    while(k->left != nullptr) k = k->left;
+    return k;
+}
+
+Node* AvlTree::FindFather(Node* r, Node* p){
+    if(r == nullptr || p == nullptr) return nullptr;
+    if(r->data == p->data) return nullptr; // p is root
+    
+    if(r->left == p || r->right == p) return r;
+
+    if(r->data > p->data) return this->FindFather(r->left, p);
+    else return this->FindFather(r->right, p);
+}
+
+// Private
+Node* AvlTree::Remove(Node* p, int x){
+    if(p == nullptr) return nullptr;
+    if(p->data > x) p->left = Remove(p->left, x);
+    else if(p->data < x) p->right = Remove(p->right, x);
+    else{   // p->data == x
+
+        // don't have a child 
+        if(p->left == nullptr && p->right == nullptr){  
+            delete p;
+            return nullptr;
+        }
+        // has just one child 
+        else if(p->left == nullptr || p->right == nullptr){
+            if( p == this->root){
+                if(p->left) this->root = p->left;
+                if(p->right) this->root = p->right;
+                delete p;
+                return this->root;
+            } 
+
+            Node* child = (p->left != nullptr) ? p->left : p->right;
+            delete p;
+            return child;
+        }
+        // has two children 
+        else{
+            Node* An = FindAncestor(p);
+            p->data = An->data;
+            p->right = Remove(p->right, An->data);
+        }
+    }
+
+    p->height = 1 + max(GetHeight(p->left), GetHeight(p->right));
+
+    int balance = GetBalance(p);
+
+    // Left - heavy 
+    if(balance > 1){
+        if(GetBalance(p->left) >= 0){ // Left - Left
+            return RotateRight(p);
+        }
+        else{   // Left - Right
+            p->left = RotateLeft(p->left);
+            return RotateRight(p);
+        }
+    }
+
+    // Right - heavy 
+    else if(balance < -1){
+        if(GetBalance(p->right) <= 0){
+            // Right-Right
+            return RotateLeft(p);
+        }
+        else{
+            // Right-Left
+            p->right = RotateRight(p->right);
+            return RotateLeft(p);
+        }
+    }
+    return p;
+}
 
 void AvlTree::Insert(int x){
     this->root = this->Insert(this->root, x);
 }
 
-void AvlTree::Remove(Node* p, int x){
-    if(p == nullptr) return;
-
-}
-
 void AvlTree::Remove(int x){
-    this->Remove(this->root, x);
+    this->root = this->Remove(this->root, x);
 }
 
 void AvlTree::Show(){

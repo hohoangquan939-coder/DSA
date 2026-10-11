@@ -2,7 +2,8 @@
 // So if i make any mistakes, please forgive me 
 // To be honeset, this data structures is really difficult for me 
 // So i had to use AI to help me implement the AVL Tree
-
+// Finally, this is such a fuck data structure
+ 
 #include "Node.h"
 
 class AvlTree{
@@ -11,9 +12,11 @@ class AvlTree{
         bool Search(int, Node*);
         int GetHeight(Node*);
         int GetBalance(Node*);
+        Node* FindFather(Node*, Node*); // U don't have to use this func
+        Node* FindAncestor(Node*);
 
         Node* Insert(Node*, int); // Overload
-        void Remove(Node*, int); // Overload
+        Node* Remove(Node*, int); // Overload
 
         Node* RotateLeft(Node*);
         Node* RotateRight(Node*);
